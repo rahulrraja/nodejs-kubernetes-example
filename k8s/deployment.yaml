@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nodejs-kubernetes-example
+  namespace: default
+spec: 
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nodejs-kubernetes-example
+        version: v1
+    spec:
+      containers:
+        - name: nodejs-kubernetes-example
+          image: nodejs-kubernetes-example:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: port9000
+              containerPort: 9000
+          envFrom:
+          - configMapRef:
+              name: nodejs-kubernetes-configmap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodejs-kubernetes-example
+  namespace: default
+  labels:
+    app: nodejs-kubernetes-example
+spec:
+  type: NodePort
+  ports:
+    - port: 9000
+      targetPort: 9000
+      nodePort: 30900
+      name: http
+  selector:
+    app: nodejs-kubernetes-example
