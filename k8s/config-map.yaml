@@ -3,4 +3,4 @@ apiVersion: v1
 metadata:
   name: nodejs-kubernetes-configmap
 data:
-  logLevel: 'info'
+  logLevel: 'debug'
